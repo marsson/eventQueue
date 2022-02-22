@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Delete</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Delete</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>{!REQUIRESCRIPT(&apos;/soap/ajax/29.0/connection.js&apos;)}
+try
+{
+  var selectedRecords = {!GETRECORDIDS( $ObjectType.Queue__c )};
+  if(selectedRecords.length&lt;1)
+    alert(&apos;Please Select at Least One Row !&apos;);
+  else
+  {
+    userConsent = confirm(
+        selectedRecords.length +
+        &apos; Record(s) will be Deleted. Continue ? &apos;
+      );
+    if(userConsent == true)
+    {
+      delResult = sforce.connection.deleteIds(selectedRecords);
+      if (delResult[0].getBoolean(&quot;success&quot;))
+      {
+        alert(&apos;The Record(s) were Deleted Successfully.&apos;);
+        window.location.reload();
+      }
+      else
+        alert(
+          &apos;The Record(s) Could Not be Deleted. Error Message: &apos; +
+          delResult[0].errors.message
+        );
+    }
+  }
+}
+catch(e)
+{
+  alert(&apos;The Action Could not be Completed. Error Message: &apos; + e);
+}</url>
+</WebLink>

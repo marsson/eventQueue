@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExternalCreationDate__c</fullName>
+    <defaultValue>NOW()</defaultValue>
+    <description>External last modified date based on iDoc date (using the external system date/timezone) to ensure the integration between systems will keep the transactions sequence as they were triggered by the original System</description>
+    <externalId>false</externalId>
+    <label>External Creation Date</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

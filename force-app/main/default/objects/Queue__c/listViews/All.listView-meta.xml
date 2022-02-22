@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>EventName__c</columns>
+    <columns>Status__c</columns>
+    <columns>businessDocument__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>businessDocumentCorrelatedNumber__c</columns>
+    <columns>InternalId__c</columns>
+    <columns>ObjectId__c</columns>
+    <columns>StatusMessage__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+    <language>en_US</language>
+</ListView>

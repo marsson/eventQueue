@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payload__c</fullName>
+    <description>Payload
+(Valor do Objeto Corrente, para atribuir esta informação concatene o objeto a uma string e atribua este valor concatenado ao payload. Este Atributo podera ser utilizado no futuro para Determinar o estado do Evento Corrente dispensando o uso do RecordType QUEUED nos Objetos que necessitam gerenciamento de estado)</description>
+    <externalId>false</externalId>
+    <label>Payload</label>
+    <length>32000</length>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>
