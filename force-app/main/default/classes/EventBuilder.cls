@@ -1,6 +1,5 @@
 /**
  *
- *
  * @author: Eduardo Ribeiro de Carvalho - @ercarval
  * Service Class (Decorator Pattern)
  * Should be allowed to have a bunch of public methods
