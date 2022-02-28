@@ -41,7 +41,7 @@ public virtual with sharing class BaseRestProxy {
 
         //this.httpRequest.setEndpoint( 'callout:'+namedCredentialName );
 
-        if(EventQueueHelper.isNamedCredencialValid(namedCredentialName)==false){
+        if(EventQueueHelper.isNamedCredencialValid(namedCredentialName)==false && !Test.isRunningTest()){
         throw new IntegrationException('Invalid Named Credential '+ namedCredentialName);
         }
         this.callout='callout:'+namedCredentialName;

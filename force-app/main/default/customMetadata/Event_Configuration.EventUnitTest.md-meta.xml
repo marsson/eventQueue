@@ -16,6 +16,6 @@
     </values>
     <values>
         <field>NamedCredencial__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">BookOutboundHeroku</value>
     </values>
 </CustomMetadata>

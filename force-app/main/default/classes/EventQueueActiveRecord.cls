@@ -175,28 +175,15 @@ public abstract with sharing class EventQueueActiveRecord  {
 
     public List<EventQueueFile> findLastPayloadProcessedForEvent (String eventId, String eventName) {
 
-
-        List<ContentDocumentLink> documentLinks = [SELECT Id, ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :eventId];
-
-        Set<Id> contentDocumentIds = new Set<Id>();
-        for(ContentDocumentLink documentLink : documentLinks){
-            contentDocumentIds.add(documentLink.ContentDocumentId);
-        }
-
+        List<Attachment> attachments = [SELECT Id,Body,Name,ParentId  FROM Attachment WHERE ParentId = :eventId WITH SECURITY_ENFORCED];
         List<EventQueueFile> payloads = new List<EventQueueFile>();
-
         List<ContentVersion> contentVersions = new List<ContentVersion>();
-        if (Schema.sObjectType.ContentVersion.isAccessible()) {
-             contentVersions = [SELECT Id, Title, VersionData FROM ContentVersion WHERE ContentDocumentId IN :contentDocumentIds AND Title LIKE :eventName + '%' ORDER BY LastModifiedDate DESC];
-        }
 
-        for(ContentVersion contentVersion : contentVersions){
-
+        for(Attachment attachment : attachments){
             EventQueueFile payload = new EventQueueFile();
-            payload.title = contentVersion.Title;
-            payload.parentId = Id.valueOf(eventId);
-            payload.content = contentVersion.VersionData;
-
+            payload.title = attachment.Name;
+            payload.parentId =attachment.ParentId ;
+            payload.content = attachment.Body;
             payloads.add(payload);
         }
 
