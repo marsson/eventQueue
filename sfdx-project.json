@@ -19,7 +19,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "53.0",
     "packageAliases": {
-        "Asyncronous Queue": "0Hoque",
-        "async_queue": "0Ho4x000000blbuCAA"
+        "async_queue": "0Ho4x000000blbuCAA",
+        "async_queue@0.1.0-1": "04t4x000000hwXFAAY"
     }
 }

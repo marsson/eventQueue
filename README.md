@@ -45,3 +45,8 @@ Fill Command Class Name with the name of the apex class that should be executed.
 
 ##High volume execution using platform events
 Platform events can be leveraged to get more performance out of the event queue execution. a specific platform event: 
+
+## Installation:
+Successfully created the package version [08c4x000000blkvAAA]. Subscriber Package Version Id: 04t4x000000hwXFAAY
+Package Installation URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t4x000000hwXFAAY
+As an alternative, you can use the "sfdx force:package:install" command.
