@@ -12,7 +12,6 @@
     <label>Event Queue</label>
     <navType>Standard</navType>
     <tabs>Queue__c</tabs>
-    <tabs>Book__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Event_Queue_UtilityBar</utilityBar>
 </CustomApplication>

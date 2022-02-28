@@ -9,19 +9,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AbstractInboundService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AbstractOutboundCommand</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>AbstractOutboundCommandTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AbstractSoapOutboundCommand</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -173,21 +165,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <description>Permission set for Event Queue running users. Users that Schedule the Scheduled Job and runs the automation should have this permission as should the Integration user</description>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Book__c.Author__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Book__c.ExternalId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Book__c.ReleaseDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Queue__c.ExceptionStackTrace__c</field>
