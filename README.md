@@ -3,7 +3,7 @@ The Execution queue is the implementation of a command design patters to orchest
 
 
 ## The Design Principles
-The framework is based on an Open-source implementation, personalized to humm, in order to achieve the following design principles:
+The framework is based on an Open-source implementation, in order to achieve the following design principles:
 
 + Performance by Asyncrossity
 + Preemptive customer support
@@ -12,13 +12,12 @@ The framework is based on an Open-source implementation, personalized to humm, i
 
 ## Local Vs. Global business processes.
 
-
 The execution queue is supposed to be used for all the business processes that might need custom extension and traced reliability. 
-Mapped usecases include:
+Mapped use cases include:
 
 + Messaging (Sending emails or SMSs/ Emails).
-+ Inbound events such as hooks for creating new records with operation result traceability.
-+ outbound events such as direct connections to external systems in regions without a middleware.
++ Inbound events such as hooks to custom apex webservices for creating new records with operation result traceability.
++ outbound events such as direct connections to external systems in implementations without a middleware.
 
 
 ## Benefits
@@ -28,6 +27,7 @@ Mapped usecases include:
 + Stack trace and error message persisting in case of execution failure, allowing a preemptive support for customers.
 
 ## High-Level Design
+
 The design of the application is based on a single custom object: the queue object. This object triggers custom code execution through a system apex trigger.
 The creation or updation of an Event Queue in the “Queued” status triggers the execution of the logic configured for that given record.
 There are 2 means of consumption or execution of the trigger objects. Through a Trigger on creation or updation of the object or through a scheduled job that runs every 5 minutes. The scheduled job is responsible for the retry mechanism of the solution.
