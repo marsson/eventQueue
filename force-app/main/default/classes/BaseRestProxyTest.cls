@@ -15,6 +15,23 @@ private class BaseRestProxyTest {
 
         RestProxy proxy = new RestProxy(event);
 
+        String reponse = proxy.send ((Object)'request');
+
+        proxy = new RestProxy();
+
+        Test.stopTest();
+
+
+    }
+    static void sendPostRequestWithURLEncodedContent() {
+
+        EventQueue event = EventQueueFixtureFactory.createBaseEvent('EventUnitTest');
+
+        Test.setMock( HttpCalloutMock.class , new HttpMock ('{"response":"ok"}', true) );
+        Test.startTest();
+
+        RestProxy proxy = new RestProxy(event);
+        proxy.setContentType('url');
         String reponse = proxy.send ('request');
 
         proxy = new RestProxy();
@@ -23,6 +40,7 @@ private class BaseRestProxyTest {
 
 
     }
+
 
     @isTest
     static void sendGetRequest() {

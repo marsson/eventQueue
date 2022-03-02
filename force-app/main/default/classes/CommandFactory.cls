@@ -3,7 +3,7 @@
  */
 public class CommandFactory {
 
-	public static ICommand createIntanceFor (String commandClassName) {
+	public static ICommand createInstanceFor (String commandClassName) {
 		Type commandType = Type.forName (commandClassName);
 		return  (ICommand) commandType.newInstance();
 	}

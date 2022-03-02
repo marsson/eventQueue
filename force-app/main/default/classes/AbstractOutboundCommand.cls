@@ -4,7 +4,9 @@
  *
  * @author: Eduardo Ribeiro de Carvalho - @ercarval
  */
-public abstract with sharing class AbstractOutboundCommand extends AbstractCommand  {
+
+@SuppressWarnings('PMD.AvoidGlobalModifier')
+global abstract with sharing class AbstractOutboundCommand extends AbstractCommand  {
 
 	@TestVisible
 	protected Object targetObject;
@@ -20,7 +22,7 @@ public abstract with sharing class AbstractOutboundCommand extends AbstractComma
 	//Setup
 	virtual
 	override
-	public void init (EventQueue event) {
+	global void init (EventQueue event) {
 
 		super.init(event);
 
@@ -32,7 +34,7 @@ public abstract with sharing class AbstractOutboundCommand extends AbstractComma
 
 	virtual
 	override
-	public void preExecute() {
+	global void preExecute() {
 
 		event.appendLog('Apply Event Transformation');
 
@@ -44,7 +46,7 @@ public abstract with sharing class AbstractOutboundCommand extends AbstractComma
 
 	virtual
 	override
-	public  void execute () {
+	global void execute () {
 
 		event.appendLog('Send Message to Target System from named credentials:'+event.config.NamedCredencial__c );
 
@@ -59,13 +61,13 @@ public abstract with sharing class AbstractOutboundCommand extends AbstractComma
 
 	//
 	virtual
-	public Object send 	() {
+	global Object send 	() {
 		return proxy.send(  targetObject );
 	}
 
 	virtual
 	override
-	public void postExecute () {
+	global void postExecute () {
 
 		event.appendLog('Processing Response ');
 
@@ -76,12 +78,12 @@ public abstract with sharing class AbstractOutboundCommand extends AbstractComma
 	}
 
 	virtual
-	public BaseRestProxy getHttpRequestProxy (EventQueue event) {
+	global BaseRestProxy getHttpRequestProxy (EventQueue event) {
 		return new RestProxy( event );
 	}
 
-	public abstract Object tranformToSend ();
+	global abstract Object tranformToSend ();
 
-	public abstract void processResult (Object responseObject);
+	global abstract void processResult (Object responseObject);
 
 }
