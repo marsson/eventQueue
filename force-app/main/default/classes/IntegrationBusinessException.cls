@@ -1,7 +1,8 @@
 /**
  * @author: Eduardo Ribeiro de Carvalho - @ercarval
 */
-public class IntegrationBusinessException extends Exception {
+@SuppressWarnings('PMD.AvoidGlobalModifier')
+global class IntegrationBusinessException extends Exception {
 
 
 	public IntegrationBusinessException (IntegrationBusError e) {

@@ -1,11 +1,9 @@
-/**
- *
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
- * @coAuthor: mmarsson
- */
-public virtual with sharing class BaseRestProxy {
+
+@SuppressWarnings('PMD.AvoidGlobalModifier')
+global virtual with sharing class BaseRestProxy {
 
     private static final String JSON_CONTENT_TYPE = 'application/json; charset=UTF-8';
+    private static final String URL_CONTENT_TYPE = 'application/x-www-form-urlencoded;';
 
     private String callout;
     private String uriString;
@@ -35,7 +33,7 @@ public virtual with sharing class BaseRestProxy {
     }
 
     virtual
-    protected void setup( ) {
+    global void setup() {
 
         System.debug(' --------- Setup endpoint to Named Credential ' + namedCredentialName );
 
@@ -55,7 +53,7 @@ public virtual with sharing class BaseRestProxy {
 
 
     virtual
-    public String get( Map<String, String> uriParameters) {
+    global String get( Map<String, String> uriParameters) {
 
         this.httpRequest.setMethod( 'GET' );
 
@@ -71,11 +69,23 @@ public virtual with sharing class BaseRestProxy {
     }
 
     virtual
-    public String send( Object obj ) {
+    global String send( Object obj ) {
 
         setup();
 
         setBody (obj);
+
+        httpResponse = tryToSend (this.httpRequest);
+
+        return httpResponse.getBody();
+
+    }
+    virtual
+    global String send( String aString ) {
+
+        setup();
+
+        setBody (aString);
 
         httpResponse = tryToSend (this.httpRequest);
 
@@ -115,17 +125,37 @@ public virtual with sharing class BaseRestProxy {
      * Use this method to collect httpResponse value
      */
     virtual
-    public void postSend() {
+    global void postSend() {
         System.debug('  --------- RESPONSE CODE : ' + httpResponse.getStatusCode());
         System.debug('  --------- RESPONSE Status : ' + httpResponse.getStatus());
         System.debug('  --------- RESPONSE BODY : ' + httpResponse.getBody());
     }
 
     virtual
-    public void setBody (Object obj) {
+    global void setBody (Object obj) {
 
         this.httpRequest.setBody (JSON.serialize(obj));
+    }
 
+    virtual
+    global void setBody (String value) {
+
+        this.httpRequest.setBody (value);
+    }
+
+    /*
+    Valid Values = json / url
+     */
+    public void setContentType(String value){
+        if(value.equalsIgnoreCase('url')){
+         this.httpRequest.setHeader('Content-Type',URL_CONTENT_TYPE);
+            return;
+        }
+        if(value.equalsIgnoreCase('son')) {
+            this.httpRequest.setHeader('Content-Type', JSON_CONTENT_TYPE);
+            return;
+        }
+        throw new EventObjectException('setContentValue set with invalid value :'+value);
     }
 
     public void setUriParameters( Map<String, String> uriParameters ) {
@@ -147,7 +177,7 @@ public virtual with sharing class BaseRestProxy {
     }
 
     virtual
-    public void handleResponseStatus( HttpResponse response ) {
+    global void handleResponseStatus( HttpResponse response ) {
 
         if (response.getStatusCode() == 200) {
             return;
@@ -158,7 +188,7 @@ public virtual with sharing class BaseRestProxy {
     }
 
     virtual
-    public void handleIntegrationErrorResponse ( HttpResponse response  ) {
+    global void handleIntegrationErrorResponse ( HttpResponse response  ) {
 
         throw new IntegrationException (response);
 

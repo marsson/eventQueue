@@ -21,12 +21,14 @@
  *  } 
  * 
  * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @author: Marcelo Costa
+ *
+ * PMD Supression for global as class must be extended outside of the namespace of the unlocked package
  */
-public abstract with sharing class AbstractCommand implements ICommand {
+@SuppressWarnings('PMD.AvoidGlobalModifier')
+global abstract with sharing class AbstractCommand implements ICommand {
 
 	protected EventQueue event;
-
-
 	/**
 	 * Template execution for default actions 
 	 */
@@ -43,7 +45,7 @@ public abstract with sharing class AbstractCommand implements ICommand {
 	}	
 
 	virtual
-	protected void init (EventQueue event) {
+	global void init (EventQueue event) {
 		this.event = event;
 	}
 
@@ -51,7 +53,7 @@ public abstract with sharing class AbstractCommand implements ICommand {
 	 * Decorate execution process
 	 */ 
 	virtual
-	public void preExecute(){
+	global void preExecute(){
 		//Shoukd be dolved in implementation
 		System.debug('pre Execute');
 	}
@@ -60,12 +62,11 @@ public abstract with sharing class AbstractCommand implements ICommand {
 	 * Decorate execution process
 	 */
 	virtual
-	public void postExecute(){
+	global void postExecute(){
 		System.debug('post Execute');
 	}
 
 
-	public abstract void execute();
-
+	global abstract void execute();
 
 }

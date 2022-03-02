@@ -9,6 +9,8 @@
         <members>Book</members>
         <members>EventQueueTriggerHandler</members>
         <members>AbstractInboundCommandTest</members>
+        <members>BaseRestProxy</members>
+        <members>BaseRestProxyTest</members>
         <name>ApexClass</name>
     </types>
     <version>54.0</version>

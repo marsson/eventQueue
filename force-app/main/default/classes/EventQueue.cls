@@ -185,7 +185,7 @@ global class EventQueue extends EventQueueActiveRecord {
 
     public ICommand getCommand() {
         log ('Get Command Info for ' + this.getEventInfo());
-        return CommandFactory.createIntanceFor (this.config.commandClassName__c);
+        return CommandFactory.createInstanceFor (this.config.commandClassName__c);
     }
 
     public void setToUnhadledEvent() {

@@ -11,7 +11,7 @@
             "path": "force-app",
             "package": "async_queue",
             "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
+            "versionNumber": "0.1.2.NEXT",
             "default": false
         }
     ],
@@ -20,6 +20,8 @@
     "sourceApiVersion": "53.0",
     "packageAliases": {
         "async_queue": "0Ho4x000000blbuCAA",
-        "async_queue@0.1.0-1": "04t4x000000hwXFAAY"
+        "async_queue@0.1.0-1": "04t4x000000hwXFAAY",
+        "async_queue@0.1.1-1": "04t4x000000hwXUAAY",
+        "async_queue@0.1.2-1": "04t4x000000hwXZAAY"
     }
 }
