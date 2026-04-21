@@ -44,3 +44,10 @@ $RECYCLE.BIN/
 /out/
 target/!/IlluminatedCloud/
 .idea/
+
+/.illuminatedCloud/
+**/tsconfig*.json
+**/*.tsbuildinfo
+**/graphql.config.yml
+/docs/debugging.md
+/docs/improvements.md
