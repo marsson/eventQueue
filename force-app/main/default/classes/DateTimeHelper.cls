@@ -6,14 +6,14 @@ public with sharing class DateTimeHelper {
 
     public static final String NOW_LOG_PATTERN = 'dd-MM-yyyy HH:mm:ss.SSS';
 
-    public static DateTime removeSencondsIntoCurrentDate(Integer seconds) {
+    public static DateTime removeSecondsIntoCurrentDate(Integer seconds) {
         if (seconds == null) {
             return null;
         }
-        return removeSencondsIntoDate(System.now(), seconds);
+        return removeSecondsIntoDate(System.now(), seconds);
     }
 
-    public static DateTime removeSencondsIntoDate(DateTime timestamp, Integer seconds) {
+    public static DateTime removeSecondsIntoDate(DateTime timestamp, Integer seconds) {
         if (seconds == null) {
             return null;
         }

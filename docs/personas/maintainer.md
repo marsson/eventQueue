@@ -85,12 +85,14 @@ load-bearing ones:
 - **`EventQueueActiveRecord` keys by `Label`, not `DeveloperName`.**
   The two must match for the lookup to work. Drift silently fails as
   `UNHANDLED`.
-- **`setToUnhadledEvent`** — typo (`Unhadled`). Status constant still
-  spelled `UNHANDLED` correctly — the typo is in the method name only.
-- **`tranformToSend`** — typo (`tranform`). Abstract method;
-  subclasses everywhere in partner orgs have this spelling baked in.
-- **`DateTimeHelper.removeSencondsIntoCurrentDate`** — typo
-  (`Sencond`). Referenced from `EventExecutor`.
+- **`tranformToSend`** — typo (`tranform`). Abstract `global`
+  method; subclasses everywhere in partner orgs have this spelling
+  baked in. **Still deferred** — breaking rename, waiting for 1.0.
+- ~~**`setToUnhadledEvent`**~~ — ✅ renamed to `setToUnhandledEvent`
+  (2026-04-21). Namespace-internal only, no breaking impact.
+- ~~**`DateTimeHelper.removeSencondsIntoCurrentDate`**~~ — ✅
+  renamed to `removeSecondsIntoCurrentDate` (2026-04-21).
+  Namespace-internal only.
 - **`BaseRestProxy.setContentType("json")` is broken** (compares
   against the string literal `"son"`). Calling it with `"json"`
   throws `EventObjectException`. Default is JSON so it's rarely hit.

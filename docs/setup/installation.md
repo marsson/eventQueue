@@ -114,7 +114,7 @@ Otherwise the uninstall will fail with "scheduled Apex exists".
 
 ## Version compatibility
 
-- Source API version: **53.0** (`sfdx-project.json`).
+- Source API version: **63.0** (`sfdx-project.json`).
 - The package uses `with sharing`, `@future(callout=true)`,
   `Schedulable`, `Queueable`, `Database.AllowsCallouts`,
   `HttpCalloutMock`. No dependencies beyond standard Apex.

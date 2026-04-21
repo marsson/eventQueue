@@ -121,9 +121,9 @@ public with sharing class EventBuilder {
     }
 
     public EventQueue buildAndSave() {
-        EventQueue event = new EventQueue (event);
-        event.save();
-        return event;
+        EventQueue built = new EventQueue (this.event);
+        built.save();
+        return built;
     }
 
     public EventQueue buildExternalEvent() {

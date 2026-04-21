@@ -151,7 +151,7 @@ global virtual with sharing class BaseRestProxy {
          this.httpRequest.setHeader('Content-Type',URL_CONTENT_TYPE);
             return;
         }
-        if(value.equalsIgnoreCase('son')) {
+        if(value.equalsIgnoreCase('json')) {
             this.httpRequest.setHeader('Content-Type', JSON_CONTENT_TYPE);
             return;
         }

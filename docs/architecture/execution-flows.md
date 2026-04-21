@@ -40,7 +40,7 @@ sequenceDiagram
         CF-->>EQ: ICommand instance
         EQ->>C: execute(this)
         C-->>EQ: return (success)
-        EQ->>EQ: successfullyDeliveyEvent() -> status = DELIVERED
+        EQ->>EQ: successfullyDeliveryEvent() -> status = DELIVERED
     end
     EX->>EQ: postExecute() (for IUpdatableCommmad)
     EX->>EQ: appendProcessLogToAttachament()
@@ -69,7 +69,7 @@ sequenceDiagram
     participant EQ as EventQueue
     EQ->>EQ: hasHandlerFor(eventName)
     alt no mapping
-        EQ->>EQ: setToUnhadledEvent() -> status = UNHANDLED
+        EQ->>EQ: setToUnhandledEvent() -> status = UNHANDLED
         EQ-->>EQ: return (no execution)
     end
 ```
@@ -280,7 +280,7 @@ further manipulation.
 | Flow | File(s) |
 | --- | --- |
 | 1 — Sync dispatch | `EventConsumer.trigger`, `EventQueueTriggerHandler.cls`, `EventExecutor.cls`, `EventQueue.process()` |
-| 2 — UNHANDLED | `EventQueue.hasHandlerFor`, `setToUnhadledEvent` |
+| 2 — UNHANDLED | `EventQueue.hasHandlerFor`, `setToUnhandledEvent` |
 | 3 — Business error | `EventQueue.process()` catch of `IntegrationBusinessException`, `disableRetry()` |
 | 4 — Technical error | `EventQueue.process()` catch of generic `Exception`, `decreaseRetry()` |
 | 5 — Retry loop | `JobRetryEventProcessor.cls`, `EventExecutor.processErrorEvents` |

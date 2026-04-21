@@ -9,10 +9,10 @@ canonical map of what each value means and who can set it.
 | Value | Meaning | Set by |
 | --- | --- | --- |
 | `QUEUED` | Ready for dispatch. | Producer (`EventBuilder`, Flow, REST, retry jobs). |
-| `DELIVERED` | Command returned without throwing. | `EventQueue.successfullyDeliveyEvent()` |
+| `DELIVERED` | Command returned without throwing. | `EventQueue.successfullyDeliveryEvent()` |
 | `ERROR` | Command threw. Retry may or may not be disabled. | `EventQueue.errorProcessingEvent(Exception)` |
 | `SUCCESS` | Legacy terminal status. | `EventQueue.successfullyProcessedEvent()` — callable but not used by the packaged dispatcher. |
-| `UNHANDLED` | No `Event_Configuration__mdt` mapping for this event name. | `EventQueue.setToUnhadledEvent()` |
+| `UNHANDLED` | No `Event_Configuration__mdt` mapping for this event name. | `EventQueue.setToUnhandledEvent()` |
 | `INVALID` | Reserved for validation failures. Not currently set. | — |
 | `DONE` | Reserved. Not currently set. | — |
 | `PROCESSING` | Reserved. Not currently set. | — |
@@ -31,20 +31,20 @@ events in intermediate states without inventing strings.
 | `ERROR` | yes | `hasError`, `findEventsWithError`, `errorProcessingEvent` | Execution failure. |
 | `QUEUED` | yes | `hasQueuedEventsForBusinessDocument`, `reprocess`, `EventBuilder.createEventBaseOn` | Ready for dispatch. |
 | `DEQUEUED` | no | — | Reserved. |
-| `DELIVERED` | yes | `successfullyDeliveyEvent` | Happy path terminal state. |
+| `DELIVERED` | yes | `successfullyDeliveryEvent` | Happy path terminal state. |
 | `INVALID` | yes | — | Reserved (schema validation failures). |
 | `DONE` | yes | — | Reserved. |
 | `WAITING_EXTERNAL_SYSTEM` | no | — | Intended for long-running async with an external wait. |
 | `QUEUED_ON_EXTERNAL_SYSTEM` | no | — | Intended for events that handed off to an external queue. |
 | `EMPTY` | no | — | Reserved. |
 | `OVERRIDDEN` | no | — | Reserved. |
-| `UNHANDLED` | yes | `setToUnhadledEvent`, `hasHandlerFor` check | Dispatcher could not resolve a command. |
+| `UNHANDLED` | yes | `setToUnhandledEvent`, `hasHandlerFor` check | Dispatcher could not resolve a command. |
 | `WORKFLOW` | no | `EventExecutor.execute(QueueableContext)` | Used when dispatching via `Queueable` rather than trigger. |
 | `PROCESSING` | yes | — | Reserved. |
 | `SCHEDULED` | no | `JobPendingEvents` via `PENDING_EVENTS` constant | Event scheduled for later processing. |
 | `BATCH` | yes | — | Reserved (bulk/batch path). |
 | `WAITING` | no | — | Reserved. |
-| `IGNORED` | no | `isIgnored`, skip logic in `postExecute`, `successfullyDeliveyEvent` | Command decided the event should be skipped without error. |
+| `IGNORED` | no | `isIgnored`, skip logic in `postExecute` and `process` when `DisableDispatcher__c = true` | Command (or the kill switch) decided the event should be skipped without error. |
 
 ## State diagram (the actual transitions)
 

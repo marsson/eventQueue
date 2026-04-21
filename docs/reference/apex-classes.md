@@ -157,9 +157,9 @@ plus its attachments, in-memory log buffer, and resolved command.
 | **`postExecute()`** | Runs `postUpdateExecute` on `IUpdatableCommmad` instances. Skipped for `IGNORED` and unhandled events. |
 | `hasError()` / `isIgnored()` | Status convenience. |
 | `getCommand()` | Instantiates the command via `CommandFactory`. |
-| `setToUnhadledEvent()` | Status → `UNHANDLED` (sic: `Unhadled`). |
+| `setToUnhandledEvent()` | Status → `UNHANDLED`. |
 | `successfullyProcessedEvent()` | Status → `SUCCESS`, clears error fields. |
-| `successfullyDeliveyEvent()` | Status → `DELIVERED`, clears error fields. (Only if not `IGNORED`.) |
+| `successfullyDeliveryEvent()` | Status → `DELIVERED`, clears error fields. (Only if not `IGNORED`.) |
 | `errorProcessingEvent(Exception)` | Status → `ERROR`, persists message + stack trace. |
 | `disableRetry()` (private) | `retryCount=0`, `IsRetryDisabled=true`. |
 | `decreaseRetry()` (private) | Decrement `retryCount` (floor 0). |
@@ -446,11 +446,10 @@ Implements both `ICommand` and `IUpdatableCommmad`. Mapped via
 
 Two static helpers:
 
-- `removeSencondsIntoCurrentDate(Integer s)` → `now - s seconds`.
-- `removeSencondsIntoDate(DateTime t, Integer s)` → `t - s seconds`.
+- `removeSecondsIntoCurrentDate(Integer s)` → `now - s seconds`.
+- `removeSecondsIntoDate(DateTime t, Integer s)` → `t - s seconds`.
 
-Note the typos (`Sencond`). Used by `EventExecutor` for cutoff
-timestamps.
+Used by `EventExecutor` for cutoff timestamps.
 
 ## Test classes (not listed above)
 

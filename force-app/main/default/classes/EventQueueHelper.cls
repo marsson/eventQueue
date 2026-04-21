@@ -7,7 +7,7 @@ public with sharing class EventQueueHelper {
     public static boolean isNamedCredencialValid(String namedCredential){
         Boolean ret = false;
         List<NamedCredential> credentialList = new List <NamedCredential>();
-        if (Schema.sObjectType.Queue__c.isAccessible()) {
+        if (Schema.sObjectType.NamedCredential.isAccessible()) {
             credentialList = [Select Id from NamedCredential where DeveloperName = :namedCredential];
         }
 

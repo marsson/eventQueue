@@ -44,4 +44,4 @@ processes can fail safely and recover on their own.
 
 **Package:** `async_queue` (namespace `async_queue`)
 **Latest package version alias:** `async_queue@0.1.2-1` → `04t4x000000hwXZAAY`
-**API version:** 53.0
+**API version:** 63.0

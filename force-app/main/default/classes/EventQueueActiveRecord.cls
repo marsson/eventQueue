@@ -17,13 +17,13 @@ public abstract with sharing class EventQueueActiveRecord  {
         List<Event_Configuration__mdt> mdtList = new List<Event_Configuration__mdt>();
        if (Schema.sObjectType.Event_Configuration__mdt.isAccessible()) {
 
-       mdtList =  [Select Label, CommandClassName__c, DisableDispatcher__c, Method__c,NamedCredencial__c from Event_Configuration__mdt ];
+       mdtList =  [Select Label, DeveloperName, CommandClassName__c, DisableDispatcher__c, Method__c, NamedCredencial__c from Event_Configuration__mdt ];
         //TODO: Should we throw an exception on else??
        }
 
 
         for (Event_Configuration__mdt conf : mdtList){
-            configbymetadataName.put(conf.Label, conf);
+            configbymetadataName.put(conf.DeveloperName, conf);
         }
     }
 

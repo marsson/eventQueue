@@ -114,16 +114,24 @@ global class EventQueue extends EventQueueActiveRecord {
 
         // not execute for UNHANDLED
         if (!hasHandlerFor(getEventName())) {
-            setToUnhadledEvent();
+            setToUnhandledEvent();
+            return;
+        }
+
+        configEvent();
+
+        // honour the per-event-type kill switch
+        if (isRequestDisabled()) {
+            log('Dispatcher disabled for ' + getEventName() + ' - marking IGNORED');
+            setStatus(EventQueueStatusType.IGNORED.name());
             return;
         }
 
         try {
 
-            configEvent();
             this.command = getCommand();
             this.command.execute(this);
-            successfullyDeliveyEvent ();
+            successfullyDeliveryEvent ();
 
         } catch (IntegrationBusinessException e) {
             errorProcessingEvent(e);
@@ -160,7 +168,7 @@ global class EventQueue extends EventQueueActiveRecord {
             updatableCommand.postUpdateExecute (this);
 
             if (!hasError()) {
-                successfullyDeliveyEvent ();
+                successfullyDeliveryEvent ();
             }
 
         } catch (IntegrationBusinessException e) {
@@ -188,7 +196,7 @@ global class EventQueue extends EventQueueActiveRecord {
         return CommandFactory.createInstanceFor (this.config.commandClassName__c);
     }
 
-    public void setToUnhadledEvent() {
+    public void setToUnhandledEvent() {
         event.status__c = EventQueueStatusType.UNHANDLED.name();
     }
 
@@ -199,7 +207,7 @@ global class EventQueue extends EventQueueActiveRecord {
         return this;
     }
 
-    public EventQueue successfullyDeliveyEvent() {
+    public EventQueue successfullyDeliveryEvent() {
 
         if (!isIgnored()) {
             event.Status__c = EventQueueStatusType.DELIVERED.name();

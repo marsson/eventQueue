@@ -62,30 +62,27 @@ public class EventExecutor implements Queueable,  Database.AllowsCallouts {
 
     public static void processPendingEvents () {
         List<Queue__c> queues = EventQueueActiveRecord.findPendingQueuedEvents(
-                                    DateTimeHelper.removeSencondsIntoCurrentDate(120) , 80 ) ;
+                                    DateTimeHelper.removeSecondsIntoCurrentDate(120) , 80 ) ;
         reprocess (queues);
     }
 
     public static void processOldQueuedEvents () {
         List<Queue__c> queues = EventQueueActiveRecord.findPendingQueuedEvents(
                                     new String[] {EventQueueStatusType.QUEUED.name()},
-                                    DateTimeHelper.removeSencondsIntoCurrentDate(600) , 80 ) ;
+                                    DateTimeHelper.removeSecondsIntoCurrentDate(600) , 80 ) ;
         reprocess (queues);
     }
 
     public static void processErrorEvents () {
         List<Queue__c> queues =  EventQueueActiveRecord.findEventsWithError(
-                                     DateTimeHelper.removeSencondsIntoCurrentDate(60) , 80 ) ;
+                                     DateTimeHelper.removeSecondsIntoCurrentDate(60) , 80 ) ;
         reprocess (queues);
     }
 
     public static void reprocess (List<Queue__c> queues) {
 
-        List<Queue__c> enqueue = new List<Queue__c>();
-
         for (Queue__c queue : queues ) {
             queue.status__c = EventQueueStatusType.QUEUED.name();
-            enqueue.add (queue);
         }
 
         update queues;
