@@ -1,6 +1,11 @@
 /**
+ * @description Tests for `JobRetryEventProcessor`. Exercises the
+ * scheduled execution + the `start()`/`abort()` lifecycle and
+ * confirms cron triggers are registered and removed.
  *
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @isTest
 private class JobRetryEventProcessorTest {

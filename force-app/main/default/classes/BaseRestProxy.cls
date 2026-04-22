@@ -1,4 +1,3 @@
-
 @SuppressWarnings('PMD.AvoidGlobalModifier')
 global virtual with sharing class BaseRestProxy {
 

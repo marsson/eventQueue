@@ -1,5 +1,12 @@
 /**
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @description Tests for `EventExecutor`. Covers the synchronous
+ * dispatch path, the `reprocess()` requeue helper, and the three
+ * scheduled-job entry points (`processPendingEvents`,
+ * `processOldQueuedEvents`, `processErrorEvents`).
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @isTest
 private class EventExecutorTest {

@@ -1,5 +1,13 @@
 /**
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @description Tests for `AbstractCommand`'s template method.
+ * Verifies that the lifecycle hooks (`preExecute`, `execute`,
+ * `postExecute`) are invoked when overridden, and skipped
+ * otherwise (default no-ops still run, but observable side
+ * effects only occur on overrides).
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @isTest
 public class AbstractCommandTest {

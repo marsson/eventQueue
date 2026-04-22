@@ -1,6 +1,11 @@
 /**
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
-*/
+ * @description Tests for `EventBuilder`. Exercises the fluent
+ * builder chain end-to-end (`build()` and `buildExternalEvent()`).
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
+ */
 @isTest
 public with sharing class EventBuilderTest {
 

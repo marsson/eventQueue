@@ -1,10 +1,21 @@
 /**
- * @author: Heitor Araujo on 18/10/2017.
+ * @description Facade over the standard `Attachment` SObject for
+ * persisting payloads associated with a `Queue__c` event. Hides
+ * the conversion from `EventQueueFile` DTO to `Attachment` and
+ * the bulk insert.
+ *
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
-
 public with sharing class EventQueueFileFacade {
 
 
+    /**
+     * @description Convert each `EventQueueFile` to an `Attachment`
+     * (named `<title>.txt`, content type `txt`) and insert them in
+     * a single DML.
+     * @param eventFiles Buffered files to persist.
+     */
     public static void createFilesForEventQueues(List<EventQueueFile> eventFiles){
 
         Map<String, EventQueueFile> eventFilesByTitle = buildEventFilesByTitle(eventFiles);

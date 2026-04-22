@@ -1,8 +1,18 @@
 /**
+ * @description Active-record base extended by `EventQueue`.
+ * Loads and caches every `Event_Configuration__mdt` row at
+ * construction time (keyed by `DeveloperName`) and exposes the
+ * SOQL/DML helpers that the framework uses to find, save, and
+ * bulk-operate on `Queue__c` records.
  *
+ * Every read method is gated with
+ * `Schema.sObjectType.<Obj>.isAccessible()` (or
+ * `WITH SECURITY_ENFORCED`) — callers without read access simply
+ * receive empty lists rather than an exception.
  *
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
- * @reviewer: Marcelo Marsson
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 public abstract with sharing class EventQueueActiveRecord  {
 
@@ -11,6 +21,11 @@ public abstract with sharing class EventQueueActiveRecord  {
     public static final String[] PENDING_EVENTS = new String[] { EventQueueStatusType.SCHEDULED.name() };
 
 
+    /**
+     * @description Construct the active-record and populate the
+     * in-memory configuration cache. Triggered once per
+     * `EventQueue` instance — not per request.
+     */
     public EventQueueActiveRecord () {
         configbymetadataName = new Map<String, Event_Configuration__mdt>();
 
@@ -27,22 +42,50 @@ public abstract with sharing class EventQueueActiveRecord  {
         }
     }
 
+    /**
+     * @description Look up the configuration for a given event
+     * name.
+     * @param eventName The event type (matches
+     *                  `Event_Configuration__mdt.DeveloperName`).
+     * @return The matching config row, or null if none is
+     *         registered.
+     */
     public Event_Configuration__mdt getEventConfiguration (String eventName) {
         return configbymetadataName.get(eventName);
     }
 
+    /**
+     * @description Report whether a configuration exists for the
+     * given event name.
+     * @param eventName The event type.
+     * @return true if a mapping exists, false otherwise.
+     */
     public Boolean hasHandlerFor (String eventName) {
         return configbymetadataName.containsKey(eventName);
     }
 
+    /**
+     * @description Bulk update of queue records.
+     * @param events The records to update.
+     */
     public static void updateAll ( List<Queue__c> events ) {
         update events;
     }
 
+    /**
+     * @description Bulk insert of queue records.
+     * @param events The records to insert.
+     */
     public static void createAll ( List<Queue__c> events ) {
         insert events;
     }
 
+    /**
+     * @description Insert or update a single queue record
+     * depending on whether its Id is populated.
+     * @param event The record to persist.
+     * @return The persisted record (with Id set).
+     */
     public Queue__c save (Queue__c event) {
 
         if (event.id == null) {
@@ -54,6 +97,13 @@ public abstract with sharing class EventQueueActiveRecord  {
         return event;
     }
 
+    /**
+     * @description Persist a batch of buffered payload files as
+     * `Attachment` records. Swallows and logs exceptions so a
+     * payload-storage failure doesn't block status updates on the
+     * parent queue row.
+     * @param eventFiles Buffered files to persist.
+     */
     public static void storePayloads(List<EventQueueFile> eventFiles) {
 
         System.debug('\n\n\n Storing Payloads ' + eventFiles);
@@ -74,6 +124,11 @@ public abstract with sharing class EventQueueActiveRecord  {
     }
 
 
+    /**
+     * @description Load queue records by Id.
+     * @param keys Record Ids to load.
+     * @return Matching records (a subset of fields).
+     */
     public static List<Queue__c> findQueuedEvents(Set<String> keys) {
         List<Queue__c> queueList= new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -83,11 +138,25 @@ public abstract with sharing class EventQueueActiveRecord  {
 
     }
 
+    /**
+     * @description Load one queue record by Id.
+     * @param id The Id to look up.
+     * @return The record, or null if not found.
+     */
     public Queue__c findOne (String id) {
         List<Queue__c> queues = findQueuedEvents ( new Set<String> {id});
         return (!queues.isEmpty()) ? queues.get(0) : null ;
     }
 
+    /**
+     * @description Check if a queue event is already pending
+     * (in `QUEUED` status) for the given business document.
+     * Used for basic deduplication by producers.
+     * @param eventName Event type to match.
+     * @param businessDocumentNumber Business doc to match.
+     * @return true if at least one `QUEUED` event exists for the
+     *         combination.
+     */
     public boolean hasQueuedEventsForBusinessDocument (String eventName, String businessDocumentNumber) {
         List<Queue__c> events = new List<Queue__c> ();
                 if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -103,6 +172,14 @@ public abstract with sharing class EventQueueActiveRecord  {
         return !events.isEmpty();
     }
 
+    /**
+     * @description Find the last two events for a given event
+     * type + business document, newest first (ordered by
+     * `ExternalCreationDate__c`).
+     * @param eventName Event type to match.
+     * @param businessDocumentNumber Business doc to match.
+     * @return Up to two matching records.
+     */
     public List<Queue__c> findLastEventsByNameAndBusinessDocumentNumber (String eventName, String businessDocumentNumber) {
         List<Queue__c> queueList = new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -119,10 +196,27 @@ public abstract with sharing class EventQueueActiveRecord  {
         return queueList;
     }
 
+    /**
+     * @description Find events in the default pending status set
+     * (`SCHEDULED`) older than the supplied cutoff.
+     * @param lastCreationDate Records older than this timestamp
+     *                         are eligible.
+     * @param listSize Max records to return.
+     * @return Matching records, oldest first.
+     */
     public static List<Queue__c> findPendingQueuedEvents (DateTime lastCreationDate, Integer listSize) {
         return findPendingQueuedEvents ( PENDING_EVENTS, lastCreationDate, listSize );
     }
 
+    /**
+     * @description Find events whose status is in the supplied
+     * list and that are older than the supplied cutoff.
+     * @param status Statuses to include.
+     * @param lastCreationDate Records older than this timestamp
+     *                         are eligible.
+     * @param listSize Max records to return.
+     * @return Matching records, oldest first.
+     */
     public static List<Queue__c> findPendingQueuedEvents (String[] status,  DateTime lastCreationDate, Integer listSize) {
         List<Queue__c> queueList = new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -138,6 +232,15 @@ public abstract with sharing class EventQueueActiveRecord  {
         return queueList;
     }
 
+    /**
+     * @description Find events in `ERROR` status older than the
+     * supplied cutoff that still have retry budget and are not
+     * hard-disabled. Drives the retry loop.
+     * @param lastCreationDate Records older than this timestamp
+     *                         are eligible.
+     * @param listSize Max records to return.
+     * @return Matching records, oldest first.
+     */
     public static List<Queue__c> findEventsWithError ( DateTime lastCreationDate, Integer listSize) {
         List<Queue__c> queueList = new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -155,6 +258,13 @@ public abstract with sharing class EventQueueActiveRecord  {
         return queueList;
     }
 
+    /**
+     * @description Find events matching a single enum status,
+     * oldest first. No date filter.
+     * @param status Status to filter on.
+     * @param listSize Max records to return.
+     * @return Matching records, oldest first.
+     */
     public static List<Queue__c> findPendingQueuedEvents (EventQueueStatusType status, Integer listSize) {
         List<Queue__c> queueList = new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {
@@ -173,6 +283,15 @@ public abstract with sharing class EventQueueActiveRecord  {
 //        return [ SELECT Body, BodyLength, ContentType, CreatedById, CreatedDate, Description, Id, LastModifiedDate, Name, ParentId FROM Attachment where ParentId = :eventId order by  LastModifiedDate desc ];
 //    }
 
+    /**
+     * @description Read every `Attachment` on a queue record and
+     * wrap it in an `EventQueueFile` DTO. Used by
+     * `EventQueue.getPayload()` to read back the persisted body.
+     * @param eventId The `Queue__c.Id` whose attachments to read.
+     * @param eventName Event type (reserved; currently unused in
+     *                  the query filter).
+     * @return The attachments wrapped as DTOs.
+     */
     public List<EventQueueFile> findLastPayloadProcessedForEvent (String eventId, String eventName) {
 
         List<Attachment> attachments = [SELECT Id,Body,Name,ParentId  FROM Attachment WHERE ParentId = :eventId WITH SECURITY_ENFORCED];
@@ -190,6 +309,14 @@ public abstract with sharing class EventQueueActiveRecord  {
         return payloads;
     }
 
+    /**
+     * @description Find every event of a given type related to a
+     * given Salesforce record.
+     * @param eventName Event type to match.
+     * @param objectId Salesforce record Id stored in
+     *                 `Queue__c.ObjectId__c`.
+     * @return Matching records.
+     */
     public static List<Queue__c> findEventTypeForObject(String eventName, String objectId) {
         List<Queue__c> queueList = new List<Queue__c>();
         if (Schema.sObjectType.Queue__c.isAccessible()) {

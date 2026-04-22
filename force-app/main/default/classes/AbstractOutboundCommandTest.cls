@@ -1,5 +1,12 @@
 /**
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @description Tests for `AbstractOutboundCommand`. Uses an inner
+ * mock subclass that overrides `send()` to bypass the HTTP layer
+ * and verifies that `tranformToSend`, `execute` and
+ * `processResult` run in the expected order.
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @isTest
 private class AbstractOutboundCommandTest {

@@ -1,6 +1,12 @@
 /**
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
-*/
+ * @description Tests for `JobOldQueuedEvents`. Verifies the
+ * `execute(SchedulableContext)` delegate and the `start()`/
+ * `abort()` lifecycle helpers.
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
+ */
 @isTest
 private class JobOldQueuedEventsTest {
 

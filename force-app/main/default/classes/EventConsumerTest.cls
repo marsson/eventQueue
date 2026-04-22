@@ -1,3 +1,12 @@
+/**
+ * @description Tests for the `EventConsumer` trigger and its
+ * handler. Validates that a bulk insert of `Queue__c` records
+ * with `Status__c = QUEUED` is split into the expected
+ * `@future`-batched dispatch calls.
+ *
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
+ */
 @isTest
 public with sharing class EventConsumerTest {
 

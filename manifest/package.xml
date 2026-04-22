@@ -11,7 +11,56 @@
         <members>AbstractInboundCommandTest</members>
         <members>BaseRestProxy</members>
         <members>BaseRestProxyTest</members>
+        <members>AbstractInboundService</members>
+        <members>AbstractSoapOutboundCommand</members>
+        <members>BookInboundCommand</members>
+        <members>BookOutboundCommand</members>
+        <members>BookPublisher</members>
+        <members>BookRestController</members>
+        <members>BookTransformer</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <members>BookTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Book__c</members>
+        <members>Queue__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Book__c-Book Layout</members>
+        <members>Event_Configuration__mdt-Event Configuration Layout</members>
+        <members>Queue__c-EventQueue Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>BookOutboundHeroku</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>Event_Configuration__mdt</members>
+        <members>Queue__c</members>
+        <members>queueEvent__e</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <name>CompactLayout</name>
+    </types>
+    <types>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Event_Queue_Record_Page</members>
+        <members>Event_Queue_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <name>ListView</name>
+    </types>
+    <types>
+        <name>WebLink</name>
     </types>
     <version>54.0</version>
 </Package>

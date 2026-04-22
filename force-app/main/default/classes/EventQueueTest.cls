@@ -1,6 +1,12 @@
 /**
+ * @description Tests for `EventQueue`. Covers happy-path dispatch,
+ * unhandled events, payload persistence as attachments, and the
+ * exception-handling branches that route to `ERROR` with retry
+ * decremented or disabled.
  *
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @isTest
 public with sharing class EventQueueTest {

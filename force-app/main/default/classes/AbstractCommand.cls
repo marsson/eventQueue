@@ -1,39 +1,56 @@
 /**
- * Provide template method for ICommand executions
+ * @description Template-method base class for commands. Implements
+ * the standard lifecycle invoked by the dispatcher:
  *
- * How to Use 
- *   	
- *  class PurchaseApprovedCommand extends AbstractCommand {
- *		private Order salesOrder;
- *		
- *      // rewrite init method to initialize attributes	
- *      override
- *		public void init (EventQueue event) {
- *			super.init(event);
- *			salesOrder = (Order) event.getPayloadFromJson( Order.class ); 
- *		}
- *		
- *      // principal execution method
- *		public void execute () {
- *			// implement you logic here
- *		}
+ * <pre>
+ * execute(event)
+ *    -> init(event)
+ *    -> preExecute()
+ *    -> execute()       // abstract - implemented by subclass
+ *    -> postExecute()
+ * </pre>
  *
- *  } 
- * 
- * @author: Eduardo Ribeiro de Carvalho - @ercarval
- * @author: Marcelo Costa
+ * Subclasses override the hooks they care about. The only method
+ * that MUST be implemented is the no-arg `execute()`.
  *
- * PMD Supression for global as class must be extended outside of the namespace of the unlocked package
+ * Usage example:
+ *
+ * <pre>
+ * class PurchaseApprovedCommand extends AbstractCommand {
+ *     private Order salesOrder;
+ *
+ *     override
+ *     public void init(EventQueue event) {
+ *         super.init(event);
+ *         salesOrder = (Order) event.getPayloadFromJson(Order.class);
+ *     }
+ *
+ *     public void execute() {
+ *         // business logic here
+ *     }
+ * }
+ * </pre>
+ *
+ * PMD suppression for global: the class must be extendable from
+ * outside the package namespace.
+ *
+ * @author Eduardo Ribeiro de Carvalho - @ercarval
+ * @author Marcelo Costa
+ * @author Heitor Araujo
+ * @author Marcelo Marsson
  */
 @SuppressWarnings('PMD.AvoidGlobalModifier')
 global abstract with sharing class AbstractCommand implements ICommand {
 
 	protected EventQueue event;
+
 	/**
-	 * Template execution for default actions 
+	 * @description Template entry point invoked by the dispatcher.
+	 * Runs `init → preExecute → execute → postExecute` in order.
+	 * @param event The event being processed.
 	 */
 	public void execute(EventQueue event) {
-	
+
 		init(event);
 
 		preExecute();
@@ -42,24 +59,32 @@ global abstract with sharing class AbstractCommand implements ICommand {
 
 		postExecute();
 
-	}	
+	}
 
+	/**
+	 * @description Set up command state. Default implementation
+	 * stores the event reference; override to deserialise the
+	 * payload into a domain object.
+	 * @param event The event being processed.
+	 */
 	virtual
 	global void init (EventQueue event) {
 		this.event = event;
 	}
 
 	/**
-	 * Decorate execution process
-	 */ 
+	 * @description Hook invoked before `execute()`. Override to
+	 * perform pre-processing (e.g. transform the payload).
+	 */
 	virtual
 	global void preExecute(){
-		//Shoukd be dolved in implementation
+		//Should be solved in implementation
 		System.debug('pre Execute');
 	}
 
 	/**
-	 * Decorate execution process
+	 * @description Hook invoked after `execute()`. Override to
+	 * perform post-processing.
 	 */
 	virtual
 	global void postExecute(){
@@ -67,6 +92,10 @@ global abstract with sharing class AbstractCommand implements ICommand {
 	}
 
 
+	/**
+	 * @description The core business logic for this command.
+	 * Subclasses must implement.
+	 */
 	global abstract void execute();
 
 }
