@@ -1,7 +1,7 @@
 {
   "orgName": "marcelo.cost company",
   "edition": "Developer",
-  "features": ["EnableSetPasswordInApi"],
+  "features": ["EnableSetPasswordInApi","DebugApex"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true

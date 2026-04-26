@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Queue Admin Console</masterLabel>
+    <description>Admin surface for the async_queue framework: retention policies, scheduling, purge history, cross-cutting notifier/logger settings.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>

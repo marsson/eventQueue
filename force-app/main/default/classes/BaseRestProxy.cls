@@ -1,6 +1,7 @@
 @SuppressWarnings('PMD.AvoidGlobalModifier')
 global virtual with sharing class BaseRestProxy {
 
+    private static final String SRC = 'BaseRestProxy';
     private static final String JSON_CONTENT_TYPE = 'application/json; charset=UTF-8';
     private static final String URL_CONTENT_TYPE = 'application/x-www-form-urlencoded;';
 
@@ -34,15 +35,13 @@ global virtual with sharing class BaseRestProxy {
     virtual
     global void setup() {
 
-        System.debug(' --------- Setup endpoint to Named Credential ' + namedCredentialName );
-
-        //this.httpRequest.setEndpoint( 'callout:'+namedCredentialName );
+        LoggerFactory.getInstance().debug(SRC, 'Setup endpoint to Named Credential ' + namedCredentialName);
 
         if(EventQueueHelper.isNamedCredencialValid(namedCredentialName)==false && !Test.isRunningTest()){
         throw new IntegrationException('Invalid Named Credential '+ namedCredentialName);
         }
         this.callout='callout:'+namedCredentialName;
-        System.debug('CALLOUT='+this.callout);
+        LoggerFactory.getInstance().debug(SRC, 'CALLOUT=' + this.callout);
         this.httpRequest.setMethod( method );
         this.httpRequest.setHeader('Content-Type', JSON_CONTENT_TYPE);
         this.httpRequest.setEndpoint(this.callout);
@@ -94,19 +93,22 @@ global virtual with sharing class BaseRestProxy {
 
     private HttpResponse tryToSend (HttpRequest request) {
 
+        AbstractLogger log = LoggerFactory.getInstance();
+
         for (Integer i = 0 ; i < 3; i++) {
 
             try {
 
-                system.debug('>>>>>> this.httpRequest: ' + this.httpRequest);
+                log.debug(SRC, 'sending httpRequest: ' + this.httpRequest);
                 this.httpResponse = http.send(this.httpRequest);
                 break;
             }
                 catch (CalloutException e) {
 
-                System.debug('  --------- Error [ retry ' + i + ' ] - ' + e.getMessage());
+                log.warn(SRC, 'callout failed [ retry ' + i + ' ] - ' + e.getMessage());
 
                 if (i == 2) {
+                    log.error(SRC, 'callout failed after ' + (i + 1) + ' retries to ' + this.callout, e);
                     throw e;
                 }
 
@@ -125,9 +127,10 @@ global virtual with sharing class BaseRestProxy {
      */
     virtual
     global void postSend() {
-        System.debug('  --------- RESPONSE CODE : ' + httpResponse.getStatusCode());
-        System.debug('  --------- RESPONSE Status : ' + httpResponse.getStatus());
-        System.debug('  --------- RESPONSE BODY : ' + httpResponse.getBody());
+        AbstractLogger log = LoggerFactory.getInstance();
+        log.debug(SRC, 'RESPONSE CODE : ' + httpResponse.getStatusCode());
+        log.debug(SRC, 'RESPONSE Status : ' + httpResponse.getStatus());
+        log.debug(SRC, 'RESPONSE BODY : ' + httpResponse.getBody());
     }
 
     virtual

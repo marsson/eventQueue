@@ -26,6 +26,8 @@ processes can fail safely and recover on their own.
 - **Installing the package?** → [setup/installation.md](./setup/installation.md).
 - **Writing a new command?** → [usage/implementing-a-command.md](./usage/implementing-a-command.md).
 - **Triaging a failed event?** → [debugging.md](./debugging.md).
+- **Configuring retention / the Admin Console?** → [setup/retention-configuration.md](./setup/retention-configuration.md), [reference/queue-admin-console.md](./reference/queue-admin-console.md).
+- **Adding a notifier or logger implementation?** → [reference/notifier.md](./reference/notifier.md), [reference/logger.md](./reference/logger.md).
 - **Planning the revamp?** → [improvements.md](./improvements.md).
 
 ## Glossary (quick reference)

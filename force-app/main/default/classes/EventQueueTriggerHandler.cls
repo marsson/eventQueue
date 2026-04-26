@@ -3,7 +3,12 @@
  */
 
 public with sharing class EventQueueTriggerHandler {
+
+    private static final String SRC = 'EventQueueTriggerHandler';
+
     public EventQueueTriggerHandler() {
+
+        AbstractLogger log = LoggerFactory.getInstance();
 
         //all elements with status__c = Queued
         Map<String, String> events = new Map<String, String>();
@@ -11,7 +16,7 @@ public with sharing class EventQueueTriggerHandler {
         Integer i = 0;
 
         if (System.isBatch() || System.isFuture()) {
-            System.debug('Dequeue is in future method. Ignore');
+            log.debug(SRC, 'Dequeue is in future method. Ignore');
             return;
         }
 
@@ -33,7 +38,7 @@ public with sharing class EventQueueTriggerHandler {
         }
 
         if (events.size() > 0) {
-            System.debug('DeQueueProcessor - Process last batch ' + events.size());
+            log.debug(SRC, 'DeQueueProcessor - Process last batch ' + events.size());
             EventExecutor.processEvents(events);
         }
     }

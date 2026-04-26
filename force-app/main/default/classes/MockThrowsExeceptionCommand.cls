@@ -28,7 +28,7 @@ public class MockThrowsExeceptionCommand implements ICommand, IUpdatableCommmad 
      * @param event The event being processed.
      */
     public void postUpdateExecute(EventQueue event) {
-        System.debug('post Execute');
+        LoggerFactory.getInstance().debug('MockThrowsExeceptionCommand', 'post Execute');
     }
 
 

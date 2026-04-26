@@ -19,6 +19,8 @@
  */
 global class EventQueue extends EventQueueActiveRecord {
 
+    private static final String SRC = 'EventQueue';
+
     public static final Integer DEQUEUE_QUEUED_BATCH_SIZE = 30;
     public static final Integer DEQUEUE_ERROR_BATCH_SIZE = 30;
 
@@ -541,7 +543,7 @@ global class EventQueue extends EventQueueActiveRecord {
 
     /**
      * @description Append a line to the in-memory processing log
-     * buffer and echo it to `System.debug`. Flushed to an
+     * buffer and echo it through `LoggerFactory`. Flushed to an
      * `ExecutionTrace_*` attachment on save.
      * @param message The line to record.
      */
@@ -550,7 +552,7 @@ global class EventQueue extends EventQueueActiveRecord {
             this.processingLog = new List<String>();
         }
         processingLog.add (message);
-        System.debug (message);
+        LoggerFactory.getInstance().debug(SRC, message);
     }
 
     /**
@@ -564,7 +566,8 @@ global class EventQueue extends EventQueueActiveRecord {
             return;
         }
 
-        System.debug ('\n\n ................. appendProcessLogToAttachament Logged Lines [ ' + processingLog.size() + ' ] ');
+        LoggerFactory.getInstance().debug(SRC,
+            'appendProcessLogToAttachment - flushing ' + processingLog.size() + ' line(s)');
 
         addPayload ('ExecutionTrace_' + System.now() + '_' + (event.businessDocument__c == null ? '' : event.businessDocument__c)
                 , convertProcessingLogToStringFile());
@@ -597,7 +600,8 @@ global class EventQueue extends EventQueueActiveRecord {
      */
     public void createAllEvents(List<EventQueue> events) {
 
-        System.debug('\n -------------- STORE ALL EVENTS -------------\n' + events);
+        AbstractLogger log = LoggerFactory.getInstance();
+        log.debug(SRC, 'createAllEvents - storing ' + (events == null ? 0 : events.size()) + ' event(s)');
 
         List<Queue__c> queues = new List<Queue__c>();
         List<EventQueueFile> payloads = new List<EventQueueFile>();
@@ -611,7 +615,7 @@ global class EventQueue extends EventQueueActiveRecord {
 
         for (EventQueue event : events) {
 
-            System.debug('\n -------------- Events Into IndexedEvents  -------------\n' + JSON.serialize(event));
+            log.debug(SRC, 'event indexed: ' + JSON.serialize(event));
 
             payloads.addAll(event.correlateAttachedPayloadWithEvent ());
 

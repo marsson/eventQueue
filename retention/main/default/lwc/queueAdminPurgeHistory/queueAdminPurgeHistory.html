@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <template if:true={loading}>
+            <lightning-spinner alternative-text="Loading…"></lightning-spinner>
+        </template>
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error">{errorMessage}</div>
+        </template>
+
+        <lightning-card title="Purge History">
+            <div slot="actions">
+                <lightning-combobox label="" variant="label-hidden"
+                                     value={statusFilter}
+                                     options={statusOptions}
+                                     onchange={handleFilterChange}
+                                     placeholder="Filter by status"></lightning-combobox>
+                <lightning-button label="Refresh" icon-name="utility:refresh" class="slds-var-m-left_x-small" onclick={load}></lightning-button>
+            </div>
+
+            <lightning-datatable
+                data={logs}
+                columns={columns}
+                key-field="Id"
+                hide-checkbox-column>
+            </lightning-datatable>
+        </lightning-card>
+    </div>
+</template>

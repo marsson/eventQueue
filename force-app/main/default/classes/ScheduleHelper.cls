@@ -1,15 +1,17 @@
 /**
  * @description Helper that schedules a `Schedulable` to run every
  * N minutes by emitting `60/N` separate cron jobs (one per minute
- * slot). Apex doesn't support `*/N` in the minutes field of cron
- * expressions outside batch context, so this helper compensates
- * by registering one job per slot.
+ * slot). Apex doesn't support the star-slash-N pattern in the
+ * minutes field of cron expressions outside batch context, so this
+ * helper compensates by registering one job per slot.
  *
  * @author Eduardo Ribeiro de Carvalho - @ercarval
  * @author Heitor Araujo
  * @author Marcelo Marsson
  */
 public with sharing class ScheduleHelper {
+
+    private static final String SRC = 'ScheduleHelper';
 
     public static Integer jobCountForTest = 0;
 
@@ -24,6 +26,7 @@ public with sharing class ScheduleHelper {
      */
     public void scheduleIntoMinutesInterval ( Schedulable service,  Integer minuteInterval ) {
 
+        AbstractLogger log = LoggerFactory.getInstance();
         String cronExpression = ' * * * ?';
         Integer i = 0;
         String executionMinute = '';
@@ -35,7 +38,16 @@ public with sharing class ScheduleHelper {
 
             executionMinute += i;
 
-            System.schedule( getServiceName (service) + '  ' + jobCountForTest + executionMinute , '0 ' + executionMinute + cronExpression , service);
+            // Per-slot try/catch: a single failed slot must not leave half
+            // the cron jobs registered while the rest are silently dropped.
+            String jobName = getServiceName (service) + '  ' + jobCountForTest + executionMinute;
+            try {
+                System.schedule( jobName, '0 ' + executionMinute + cronExpression , service);
+            } catch (Exception e) {
+                log.error(SRC,
+                    'Failed to schedule slot ' + jobName + ' (cron="0 ' + executionMinute + cronExpression
+                    + '"): ' + e.getMessage(), e);
+            }
 
             i += minuteInterval;
 

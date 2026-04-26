@@ -1,0 +1,68 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <template if:true={loading}>
+            <lightning-spinner alternative-text="Loading…"></lightning-spinner>
+        </template>
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error">{errorMessage}</div>
+        </template>
+
+        <lightning-card title="Scheduled Jobs">
+            <div slot="actions">
+                <lightning-button label="Refresh" icon-name="utility:refresh" onclick={load}></lightning-button>
+            </div>
+
+            <div class="slds-var-p-horizontal_medium slds-var-m-bottom_small">
+                <lightning-input type="text"
+                                 label="Custom cron (optional — overrides the job's default when starting)"
+                                 placeholder="e.g. 0 30 3 * * ?"
+                                 value={customCron}
+                                 onchange={handleCronChange}>
+                </lightning-input>
+            </div>
+
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Scheduled</th>
+                        <th>Next Fire</th>
+                        <th>Cron</th>
+                        <th>Previous Fire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={jobs} for:item="j">
+                        <tr key={j.className}>
+                            <td>{j.className}</td>
+                            <td>
+                                <template if:true={j.scheduled}>
+                                    <lightning-badge label="Yes" variant="success"></lightning-badge>
+                                </template>
+                                <template if:false={j.scheduled}>
+                                    <lightning-badge label="No" variant="inverse"></lightning-badge>
+                                </template>
+                            </td>
+                            <td>
+                                <template if:true={j.nextFire}>
+                                    <lightning-formatted-date-time value={j.nextFire} hour="2-digit" minute="2-digit"></lightning-formatted-date-time>
+                                </template>
+                            </td>
+                            <td><code>{j.cronExpression}</code></td>
+                            <td>
+                                <template if:true={j.previousFire}>
+                                    <lightning-formatted-date-time value={j.previousFire} hour="2-digit" minute="2-digit"></lightning-formatted-date-time>
+                                </template>
+                            </td>
+                            <td>
+                                <lightning-button label="Start" data-class-name={j.className} onclick={handleStart}></lightning-button>
+                                <lightning-button label="Abort" data-class-name={j.className} variant="destructive-text" class="slds-var-m-left_x-small" onclick={handleAbort}></lightning-button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </lightning-card>
+    </div>
+</template>

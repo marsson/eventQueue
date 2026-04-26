@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LogRetentionDays__c</fullName>
+    <defaultValue>90</defaultValue>
+    <description>Queue_Purge_Log__c records older than this are eligible for auto-purge by the retention job itself.</description>
+    <externalId>false</externalId>
+    <label>Log Retention Days</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

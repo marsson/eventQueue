@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsRetentionEnabled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Master kill-switch. When false, JobQueueRetention.execute() is a no-op regardless of policy IsActive__c values.</description>
+    <externalId>false</externalId>
+    <label>Is Retention Enabled</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -116,6 +116,28 @@ List<Queue__c> rows = [SELECT Id FROM Queue__c WHERE Status__c='ERROR' AND Creat
 EventExecutor.reprocess(rows);
 ```
 
+## Managing retention
+
+The framework ships with a **Queue Admin Console** (App Page + Tab,
+visible under the Event Queue app for users with `Event_Queue_Admin`).
+
+**Five tabs:**
+1. **Overview** — retention enabled/disabled, next scheduled fire, last purge, counts by status.
+2. **Retention Policies** — CRUD of `Queue_Retention_Policy__mdt` with Run Now / Dry Run / Preview actions. Save flows through the Metadata API (~30s deploy).
+3. **Scheduling** — start/abort each of the four `Job*` classes; override cadence with a custom cron.
+4. **Purge History** — `Queue_Purge_Log__c` with filters (status, date).
+5. **Settings** — master switch, global dry-run, chunk / cap / log retention, recycle bin toggle; plus `Notifier_Setting__c.ClassName__c` and `Logger_Setting__c.ClassName__c` for the cross-cutting framework infrastructure.
+
+**Default behavior is opt-in.** On deploy, `IsRetentionEnabled__c = false`
+and no policies are active. Flip the master switch + activate policies
+in the console to start purging.
+
+**For the first policy**, leave `DryRun__c = true` + `IsActive__c = false`,
+use **Run now (dry)** to confirm the count, then flip it live.
+
+See [../reference/queue-admin-console.md](../reference/queue-admin-console.md)
+and [../setup/retention-configuration.md](../setup/retention-configuration.md).
+
 ## Things you shouldn't do
 
 - ❌ Delete scheduled jobs manually through the Scheduled Jobs UI —

@@ -1,0 +1,92 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <template if:true={loading}>
+            <lightning-spinner alternative-text="Loading…"></lightning-spinner>
+        </template>
+
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                <span class="slds-assistive-text">error</span>
+                {errorMessage}
+            </div>
+        </template>
+
+        <template if:true={overview}>
+            <div class="slds-grid slds-gutters slds-wrap slds-var-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-card title="Retention Status">
+                        <div class="slds-var-p-around_medium">
+                            <lightning-badge label={enabledLabel} variant={enabledBadgeVariant}></lightning-badge>
+                            <lightning-badge label={dryRunLabel} variant={dryRunBadgeVariant} class="slds-var-m-left_x-small"></lightning-badge>
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-card title="Next Scheduled Run">
+                        <div class="slds-var-p-around_medium">
+                            <template if:true={overview.nextRetentionFireAt}>
+                                <p><lightning-formatted-date-time value={overview.nextRetentionFireAt} year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit"></lightning-formatted-date-time></p>
+                                <p class="slds-text-color_weak slds-text-body_small">{overview.nextRetentionCronExpression}</p>
+                            </template>
+                            <template if:false={overview.nextRetentionFireAt}>
+                                <p class="slds-text-color_weak">Not scheduled — use the Scheduling tab to register JobQueueRetention.</p>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-card title="Last Purge">
+                        <div class="slds-var-p-around_medium">
+                            <template if:true={overview.lastPurge}>
+                                <p><strong>{overview.lastPurge.Name}</strong></p>
+                                <p>Policy: {overview.lastPurge.PolicyLabel__c}</p>
+                                <p>Status: {overview.lastPurge.Status__c} · Deleted: {overview.lastPurge.RecordsDeleted__c}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">
+                                    <lightning-formatted-date-time value={overview.lastPurge.RunStartedAt__c}></lightning-formatted-date-time>
+                                </p>
+                            </template>
+                            <template if:false={overview.lastPurge}>
+                                <p class="slds-text-color_weak">No purge runs yet.</p>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+
+            <lightning-card title="Queue__c breakdown by status">
+                <div slot="actions">
+                    <lightning-button label="Refresh" icon-name="utility:refresh" onclick={handleRefresh}></lightning-button>
+                </div>
+                <template if:true={hasStatusBreakdown}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-var-m-around_medium">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Total Rows</th>
+                                <th>Oldest Row</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={overview.statusBreakdown} for:item="row">
+                                <tr key={row.status}>
+                                    <td>{row.status}</td>
+                                    <td>{row.total}</td>
+                                    <td>
+                                        <template if:true={row.oldestCreatedDate}>
+                                            <lightning-formatted-date-time value={row.oldestCreatedDate}></lightning-formatted-date-time>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={hasStatusBreakdown}>
+                    <p class="slds-var-p-around_medium slds-text-color_weak">No Queue__c rows in the org.</p>
+                </template>
+            </lightning-card>
+        </template>
+    </div>
+</template>

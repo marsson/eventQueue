@@ -42,6 +42,8 @@
 @SuppressWarnings('PMD.AvoidGlobalModifier')
 global abstract with sharing class AbstractCommand implements ICommand {
 
+	private static final String SRC = 'AbstractCommand';
+
 	protected EventQueue event;
 
 	/**
@@ -79,7 +81,7 @@ global abstract with sharing class AbstractCommand implements ICommand {
 	virtual
 	global void preExecute(){
 		//Should be solved in implementation
-		System.debug('pre Execute');
+		LoggerFactory.getInstance().debug(SRC, 'pre Execute');
 	}
 
 	/**
@@ -88,7 +90,7 @@ global abstract with sharing class AbstractCommand implements ICommand {
 	 */
 	virtual
 	global void postExecute(){
-		System.debug('post Execute');
+		LoggerFactory.getInstance().debug(SRC, 'post Execute');
 	}
 
 

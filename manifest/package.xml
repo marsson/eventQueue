@@ -18,6 +18,7 @@
         <members>BookPublisher</members>
         <members>BookRestController</members>
         <members>BookTransformer</members>
+        <members>QueueAdminDeployCallback</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -54,6 +55,7 @@
     <types>
         <members>Event_Queue_Record_Page</members>
         <members>Event_Queue_UtilityBar</members>
+        <members>Event_Queue_Record_Page1</members>
         <name>FlexiPage</name>
     </types>
     <types>

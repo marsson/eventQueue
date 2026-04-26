@@ -25,6 +25,8 @@
  */
 public class EventExecutor implements Queueable,  Database.AllowsCallouts {
 
+    private static final String SRC = 'EventExecutor';
+
     private List<Queue__c> events;
 
     public static final Integer FUTURE_CALL_SIZE = 5;
@@ -90,7 +92,16 @@ public class EventExecutor implements Queueable,  Database.AllowsCallouts {
             payloads.addAll( event.payloads );
         }
 
-        EventQueueActiveRecord.updateAll (processingQueue);
+        try {
+            EventQueueActiveRecord.updateAll (processingQueue);
+        } catch (Exception e) {
+            // The retry loop will re-pick events still in QUEUED, but
+            // a silent dispatcher-side update failure must be observable.
+            LoggerFactory.getInstance().error(SRC,
+                'dispatcher updateAll failed for ' + processingQueue.size()
+                + ' event(s): ' + e.getMessage(), e);
+            throw e;
+        }
         EventQueueActiveRecord.storePayloads(payloads);
 
     }
@@ -134,11 +145,27 @@ public class EventExecutor implements Queueable,  Database.AllowsCallouts {
      */
     public static void reprocess (List<Queue__c> queues) {
 
+        if (queues == null || queues.isEmpty()) return;
+
         for (Queue__c queue : queues ) {
             queue.status__c = EventQueueStatusType.QUEUED.name();
         }
 
-        update queues;
+        // Partial-success update: a single bad row must not abort the
+        // entire requeue cycle. Per-row failures are logged so the
+        // retry loop stays observable.
+        Database.SaveResult[] results = Database.update(queues, false);
+        AbstractLogger log = LoggerFactory.getInstance();
+        for (Integer i = 0; i < results.size(); i++) {
+            if (!results[i].isSuccess()) {
+                String rowId = queues[i].Id == null ? '(no-id)' : String.valueOf(queues[i].Id);
+                String detail = '';
+                for (Database.Error err : results[i].getErrors()) {
+                    detail += err.getStatusCode() + ' ' + err.getMessage() + '; ';
+                }
+                log.warn(SRC, 'reprocess: failed to requeue ' + rowId + ' — ' + detail);
+            }
+        }
 
     }
 

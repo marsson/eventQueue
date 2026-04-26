@@ -13,6 +13,8 @@
     <navType>Standard</navType>
     <tabs>Queue__c</tabs>
     <tabs>Book__c</tabs>
+    <tabs>Queue_Admin_Console</tabs>
+    <tabs>Queue_Purge_Log__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Event_Queue_UtilityBar</utilityBar>
 </CustomApplication>

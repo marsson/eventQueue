@@ -20,9 +20,20 @@
             "versionName": "ver 0.1",
             "versionNumber": "0.1.2.NEXT",
             "default": false
+        },
+        {
+            "path": "notifier",
+            "default": false
+        },
+        {
+            "path": "logger",
+            "default": false
+        },
+        {
+            "path": "retention",
+            "default": false
         }
     ],
-    "namespace": "async_queue",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "63.0",
     "packageAliases": {

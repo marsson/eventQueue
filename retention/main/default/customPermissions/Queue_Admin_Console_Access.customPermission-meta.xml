@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants access to the Queue Admin Console LWC and its server-side methods. Gate applied on every @AuraEnabled entry point.</description>
+    <isLicensed>false</isLicensed>
+    <label>Queue Admin Console Access</label>
+</CustomPermission>

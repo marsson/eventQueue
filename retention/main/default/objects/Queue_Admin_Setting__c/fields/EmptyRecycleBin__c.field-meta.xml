@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EmptyRecycleBin__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>When false (default), deleted rows stay in the recycle bin for the 15-day recovery window. When true, Database.emptyRecycleBin() runs after each chunk to preserve the org-wide 15M recycle-bin cap.</description>
+    <externalId>false</externalId>
+    <label>Empty Recycle Bin</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

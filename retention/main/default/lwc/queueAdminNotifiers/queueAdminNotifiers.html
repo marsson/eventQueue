@@ -1,0 +1,54 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <template if:true={loading}>
+            <lightning-spinner alternative-text="Loading…"></lightning-spinner>
+        </template>
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error">{errorMessage}</div>
+        </template>
+
+        <lightning-card title="Notifier Registrations">
+            <div slot="actions">
+                <lightning-button label="Register" icon-name="utility:add" variant="brand" onclick={handleNew}></lightning-button>
+                <lightning-button label="Refresh" icon-name="utility:refresh" class="slds-var-m-left_x-small" onclick={load}></lightning-button>
+            </div>
+
+            <div class="slds-var-p-horizontal_medium slds-var-m-bottom_small slds-text-body_small slds-text-color_weak">
+                Every active registration receives every <code>NotificationEvent</code> the framework fires.
+                Blank list = notifications are silent. Toggles take effect immediately; no deploy needed.
+            </div>
+
+            <lightning-datatable
+                data={rows}
+                columns={columns}
+                key-field="Id"
+                hide-checkbox-column
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </lightning-card>
+
+        <template if:true={showModal}>
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={handleCloseModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="slds-modal__title">Register a notifier</h2>
+                    </header>
+                    <div class="slds-modal__content slds-var-p-around_medium">
+                        <lightning-input label="Apex class name" data-field="ClassName__c" value={editForm.ClassName__c} onchange={handleModalChange} required
+                                         field-level-help="Must extend AbstractNotifier."></lightning-input>
+                        <lightning-input label="Description" data-field="Description__c" value={editForm.Description__c} onchange={handleModalChange}></lightning-input>
+                        <lightning-input type="checkbox" label="Active" data-field="IsActive__c" checked={editForm.IsActive__c} onchange={handleModalChange}></lightning-input>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleCloseModal} class="slds-var-m-right_x-small"></lightning-button>
+                        <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

@@ -16,6 +16,8 @@
  */
 public abstract with sharing class EventQueueActiveRecord  {
 
+    private static final String SRC = 'EventQueueActiveRecord';
+
     private Map<String, Event_Configuration__mdt> configbymetadataName;
 
     public static final String[] PENDING_EVENTS = new String[] { EventQueueStatusType.SCHEDULED.name() };
@@ -106,7 +108,8 @@ public abstract with sharing class EventQueueActiveRecord  {
      */
     public static void storePayloads(List<EventQueueFile> eventFiles) {
 
-        System.debug('\n\n\n Storing Payloads ' + eventFiles);
+        AbstractLogger log = LoggerFactory.getInstance();
+        log.debug(SRC, 'Storing payloads (' + (eventFiles == null ? 0 : eventFiles.size()) + ')');
 
         try {
 
@@ -114,10 +117,11 @@ public abstract with sharing class EventQueueActiveRecord  {
 
         } catch (Exception e) {
 
-            System.debug('\n\n\n [ EXCEPTION ] UNABLE TO STORE PAYLOAD ' + eventFiles);
-            System.debug('\n\n\n ' + e);
-            System.debug('\n\n\n --------------------------------------------- ');
-            System.debug (e.getStackTraceString());
+            log.error(SRC,
+                'UNABLE TO STORE PAYLOAD for ' + (eventFiles == null ? 0 : eventFiles.size())
+                + ' file(s): ' + e.getMessage(),
+                e
+            );
 
         }
 

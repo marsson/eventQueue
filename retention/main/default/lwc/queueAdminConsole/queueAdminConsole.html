@@ -1,0 +1,50 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <div class="slds-page-header slds-page-header_record-home slds-var-m-bottom_medium">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:queue" size="medium"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <h1 class="slds-page-header__title">Queue Admin Console</h1>
+                            </div>
+                            <p class="slds-page-header__name-meta">
+                                Retention · Event Configurations · Scheduling · Notifiers · Loggers · Purge History · Settings
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+            <lightning-tab label="Overview" value="overview">
+                <c-queue-admin-overview></c-queue-admin-overview>
+            </lightning-tab>
+            <lightning-tab label="Retention Policies" value="policies">
+                <c-queue-admin-retention-policies></c-queue-admin-retention-policies>
+            </lightning-tab>
+            <lightning-tab label="Event Configurations" value="events">
+                <c-queue-admin-event-configurations></c-queue-admin-event-configurations>
+            </lightning-tab>
+            <lightning-tab label="Scheduling" value="scheduling">
+                <c-queue-admin-scheduling></c-queue-admin-scheduling>
+            </lightning-tab>
+            <lightning-tab label="Notifiers" value="notifiers">
+                <c-queue-admin-notifiers></c-queue-admin-notifiers>
+            </lightning-tab>
+            <lightning-tab label="Loggers" value="loggers">
+                <c-queue-admin-loggers></c-queue-admin-loggers>
+            </lightning-tab>
+            <lightning-tab label="Purge History" value="history">
+                <c-queue-admin-purge-history></c-queue-admin-purge-history>
+            </lightning-tab>
+            <lightning-tab label="Settings" value="settings">
+                <c-queue-admin-settings></c-queue-admin-settings>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>

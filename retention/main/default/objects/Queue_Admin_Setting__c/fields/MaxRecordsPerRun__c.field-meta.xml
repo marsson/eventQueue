@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MaxRecordsPerRun__c</fullName>
+    <defaultValue>50000</defaultValue>
+    <description>Global ceiling summed across all policies per scheduled cycle. When reached, remaining policies are skipped (SKIPPED_GLOBAL_CAP) and run next cycle.</description>
+    <externalId>false</externalId>
+    <label>Max Records Per Run (global)</label>
+    <precision>7</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

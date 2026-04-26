@@ -1,0 +1,73 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <template if:true={loading}>
+            <lightning-spinner alternative-text="Loading…"></lightning-spinner>
+        </template>
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error">{errorMessage}</div>
+        </template>
+
+        <lightning-card title="Event Configurations (Event_Configuration__mdt)">
+            <div slot="actions">
+                <lightning-button label="New event" icon-name="utility:add" variant="brand" onclick={handleNew}></lightning-button>
+                <lightning-button label="Refresh" icon-name="utility:refresh" class="slds-var-m-left_x-small" onclick={load}></lightning-button>
+            </div>
+
+            <template if:true={deploymentMessage}>
+                <div class="slds-var-m-around_medium slds-box">{deploymentMessage}</div>
+            </template>
+
+            <lightning-datatable
+                data={rows}
+                columns={columns}
+                key-field="developerName"
+                hide-checkbox-column
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </lightning-card>
+
+        <template if:true={showModal}>
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={handleCloseModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="slds-modal__title">Event configuration</h2>
+                    </header>
+                    <div class="slds-modal__content slds-var-p-around_medium">
+                        <template if:true={deploying}>
+                            <lightning-spinner alternative-text="Deploying…"></lightning-spinner>
+                        </template>
+
+                        <div class="slds-box slds-theme_info slds-var-m-bottom_small" role="note">
+                            <strong>Note:</strong> the Metadata API does not support deleting
+                            individual custom metadata records from Apex. To delete an event
+                            configuration, go to <em>Setup → Custom Metadata Types → Event
+                            Configuration → Manage Records → Del</em>.
+                        </div>
+
+                        <lightning-input label="Developer Name" data-field="developerName" value={editForm.developerName} onchange={handleModalChange} required></lightning-input>
+                        <lightning-input label="Label" data-field="label" value={editForm.label} onchange={handleModalChange} required></lightning-input>
+                        <lightning-input label="Command Class Name" data-field="commandClassName" value={editForm.commandClassName} onchange={handleModalChange}
+                                         field-level-help="Fully-qualified Apex class name implementing ICommand. Leave blank if this event type is dispatched via HTTP only."></lightning-input>
+                        <lightning-combobox label="Method" data-field="method" value={editForm.method} options={methodOptions} onchange={handleModalChange}></lightning-combobox>
+                        <lightning-input label="Named Credential" data-field="namedCredential" value={editForm.namedCredential} onchange={handleModalChange}
+                                         field-level-help="Name of the Named Credential used for outbound HTTP calls."></lightning-input>
+                        <lightning-input type="checkbox" label="Disable Dispatcher" data-field="disableDispatcher" checked={editForm.disableDispatcher} onchange={handleModalChange}
+                                         field-level-help="When true, incoming events of this type transition straight to INVALID without processing."></lightning-input>
+
+                        <template if:true={deploymentMessage}>
+                            <div class="slds-var-m-top_medium slds-box">{deploymentMessage}</div>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleCloseModal} class="slds-var-m-right_x-small"></lightning-button>
+                        <lightning-button label="Save &amp; deploy" variant="brand" onclick={handleSave} disabled={deploying}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

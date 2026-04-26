@@ -157,16 +157,32 @@ zero rows → escalate to the admin.
 
 ## Safety rules
 
-- ❌ Never delete a `Queue__c` row in production. It's your only
+- ❌ Never **manually** delete a `Queue__c` row in production. It's your
   record of what happened. The web link `Delete` is there because
-  the object inherits the standard action — don't click it.
+  the object inherits the standard action — don't click it. If you
+  need systematic deletion, use a retention policy (see below).
 - ❌ Never flip `IsRetryDisabled__c` from true to false unless you
   understand **why** the command disabled it. Something marked as
   non-retryable was marked so deliberately.
 - ✅ Always read the `ExecutionTrace_*` attachment before deciding an
   event is a lost cause.
 
+## Retention (controlled deletion)
+
+Manual deletion is off-limits, but the framework now supports
+**retention policies** — configurable, audited, opt-in deletion per
+`Status__c`:
+
+- Queue Admin Console → **Retention Policies** tab.
+- Every purge writes a `Queue_Purge_Log__c` row (who, what, when, how many).
+- Default `EmptyRecycleBin__c = false` — purged rows sit in Setup →
+  Recycle Bin for 15 days if you need to undelete.
+
+See [../reference/queue-admin-console.md](../reference/queue-admin-console.md)
+and [../setup/retention-configuration.md](../setup/retention-configuration.md).
+
 ## See also
 
 - [../debugging.md](../debugging.md) — the full operational runbook.
 - [../reference/status-lifecycle.md](../reference/status-lifecycle.md) — every status value.
+- [../reference/queue-admin-console.md](../reference/queue-admin-console.md) — the admin surface for retention, scheduling, purge history.
